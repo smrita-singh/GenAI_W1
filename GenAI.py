@@ -1,5 +1,6 @@
 import openai
 import os
+import streamlit as st
 
 openai.api_type = "azure"
 openai.api_version = "2023-05-15"
@@ -54,24 +55,26 @@ from langchain.vectorstores import FAISS
 
 full_index = FAISS.from_documents(data, embeddings)
 
+user_input = st.text_input("Enter the patient number: ")
 
-
-pat_num = '81630'
+#pat_num = '81630'
 
 # Retrieve rows for this patient only, from the vector store
 from langchain.chat_models import AzureChatOpenAI
 from langchain.chains import RetrievalQA
-retriever = full_index.as_retriever(search_type="mmr", search_kwargs={'filter': {'source': pat_num}}) 
+retriever = full_index.as_retriever(search_type="mmr", search_kwargs={'filter': {'source': user_input}}) 
 #retriever = full_index.as_retriever() 
 llm = AzureChatOpenAI(deployment_name="gpt-4", temperature=0)
 query = RetrievalQA.from_chain_type(llm = llm, chain_type = "stuff", retriever = retriever, \
                                 return_source_documents=True)
 
 # Pass the query and the retrieved/relevant data to the LLM
-q1_name = query(f"What is the age and gender of the patient {pat_num}?\
+q1_name = query(f"What is the age and gender of the patient {user_input}?\
                 List any medications taken.\
                 List any current symptions mentioned by this patient.\
                 List any family medical history hx.\
                 Provide your answers as a markdown")
 print(q1_name["result"])
 q1_name["source_documents"]
+
+st.write(q1_name["result"])
