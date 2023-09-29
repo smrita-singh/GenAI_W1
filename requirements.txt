@@ -42,3 +42,4 @@ yarl==1.9.2
 tiktoken==0.3.3
 faiss-gpu==1.7.2
 faiss-cpu==1.7.4
+streamlit==1.27.0
