@@ -79,7 +79,9 @@ q1_name = query(f"What is the age and gender of this patient {user_input}?\
                 List any family medical history hx.\
                 Can you suggest tests or lab work that needs to be done?.\
                 Provide your answers as a markdown")
-print(q1_name["result"])
-q1_name["source_documents"]
 
 st.write(q1_name["result"])
+print(q1_name["result"])
+#q1_name["source_documents"]
+
+
