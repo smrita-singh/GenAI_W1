@@ -56,7 +56,7 @@ embeddings = OpenAIEmbeddings(
     chunk_size = 16,
 )
 
-st.title("Medical Scribe AI Assistant​")
+st.title("MedScribe AIssistant​")
 
 user_input = st.text_input("Enter the patient number to get patient demogrphics/symptoms/medical history and other details: ")
 
