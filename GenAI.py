@@ -82,6 +82,6 @@ q1_name = query(f"What is the age and gender of this patient {user_input}?\
 
 st.write(q1_name["result"])
 print(q1_name["result"])
-#q1_name["source_documents"]
+q1_name["source_documents"]
 
 
