@@ -56,13 +56,12 @@ embeddings = OpenAIEmbeddings(
     chunk_size = 16,
 )
 
+st.title("Medical Scribe AI Assistant​")
+
+user_input = st.subheader(st.text_input("Enter the patient number to get patient demogrphics/symptoms/medical history and other details: "))
+
 from langchain.vectorstores import FAISS
-
 full_index = FAISS.from_documents(data, embeddings)
-
-user_input = st.text_input("Enter the patient number to get patient demogrphics/symptoms: ")
-
-#pat_num = '81630'
 
 # Retrieve rows for this patient only, from the vector store
 from langchain.chat_models import AzureChatOpenAI
