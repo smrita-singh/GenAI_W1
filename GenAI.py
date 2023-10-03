@@ -58,7 +58,7 @@ embeddings = OpenAIEmbeddings(
 
 st.title("Medical Scribe AI Assistant​")
 
-user_input = st.subheader(st.text_input("Enter the patient number to get patient demogrphics/symptoms/medical history and other details: "))
+user_input = st.text_input("Enter the patient number to get patient demogrphics/symptoms/medical history and other details: ")
 
 from langchain.vectorstores import FAISS
 full_index = FAISS.from_documents(data, embeddings)
