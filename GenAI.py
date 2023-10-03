@@ -2,17 +2,20 @@ import openai
 import os
 import streamlit as st
 
+# OpenAI configuration
 openai.api_type = "azure"
 openai.api_version = "2023-05-15"
 openai.api_key = "a5637d1b2ad34453807c8a71cecd9dfd"
 openai.api_base ="https://jp-sandbox.openai.azure.com/"
 
+# Setting up environment var's
 os.environ["OPENAI_API_TYPE"] = "azure"
 os.environ["OPENAI_API_BASE"] = "https://jp-sandbox.openai.azure.com/"
 os.environ["OPENAI_API_KEY"] = "a5637d1b2ad34453807c8a71cecd9dfd"
 os.environ["OPENAI_API_VERSION"] = "2023-05-15"
 deployment_name = 'gpt-4'
 
+# Checking if API works
 response = openai.ChatCompletion.create(
     engine="gpt-4", # The deployment name you chose when you deployed the GPT-35-Turbo or GPT-4 model.
     messages = [
@@ -22,12 +25,14 @@ response = openai.ChatCompletion.create(
         )
 
 #print(response)
-print(response['choices'][0]['message']['content'])
+#print(response['choices'][0]['message']['content'])
 
+
+# Reading the patient data in csv format
 import pandas as pd
 raw_data = pd.read_csv("patient_notes.csv")
-rand_sample = raw_data.sample(n=100, random_state=123)
-rand_sample.shape
+rand_sample = raw_data.sample(n=100, random_state=123)  # Generating 100 random rows
+# rand_sample.shape  # printing the number of (row,column)
 
 rand_sample.to_csv("random_100notes.csv", index=False)
 
@@ -55,7 +60,7 @@ from langchain.vectorstores import FAISS
 
 full_index = FAISS.from_documents(data, embeddings)
 
-user_input = st.text_input("Enter the patient number: ")
+user_input = st.text_input("Enter the patient number to get patient demogrphics/symptoms: ")
 
 #pat_num = '81630'
 
@@ -69,10 +74,11 @@ query = RetrievalQA.from_chain_type(llm = llm, chain_type = "stuff", retriever =
                                 return_source_documents=True)
 
 # Pass the query and the retrieved/relevant data to the LLM
-q1_name = query(f"What is the age and gender of the patient {user_input}?\
+q1_name = query(f"What is the age and gender of this patient {user_input}?\
                 List any medications taken.\
-                List any current symptions mentioned by this patient.\
+                List any current symptoms mentioned by this patient.\
                 List any family medical history hx.\
+                Can you suggest tests or lab work that needs to be done?
                 Provide your answers as a markdown")
 print(q1_name["result"])
 q1_name["source_documents"]
